@@ -40,7 +40,13 @@ local function setPronouns(target_ply, pronounText, isAdmin)
 	net.WriteString(pronounText or "nil")
 	net.Broadcast()
 
-	if not isAdmin then ULib.tsay(target_ply, "Your pronouns have been updated to (" .. pronounText .. ").") end
+	if not isAdmin then
+		if pronounText then
+			ULib.tsay(target_ply, "Your pronouns have been updated to (" .. pronounText .. ").")
+		else
+			ULib.tsay(target_ply, "Your pronouns have been removed.")
+		end
+	end
 end
 
 local function pronouns(calling_ply, pronounText)
