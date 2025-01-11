@@ -18,20 +18,28 @@ local function setPronouns(target_ply, pronounText, isAdmin)
 	if not pronounORM then return end
 	if pronounText == "nil" then pronounText = nil end
 	local pronounData = pronounORM:Find(target_ply:SteamID64())
-	if not pronounData then
+
+	if not pronounText then
+		if pronounData then
+			pronounData:Delete()
+		end
+	else
+		if not pronounData then
 		pronounData = pronounORM:New({
 			name = target_ply:SteamID64(),
 			pronouns = pronounText
 		})
-	else
-		pronounData.pronouns = pronounText
+		else
+			pronounData.pronouns = pronounText
+		end
+		pronounData:Save()
 	end
 
-	pronounData:Save()
 	net.Start("TTT2PronounBroadcast")
 	net.WriteUInt64(target_ply:SteamID64())
 	net.WriteString(pronounText)
 	net.Broadcast()
+
 	if not isAdmin then ULib.tsay(target_ply, "Your pronouns have been updated to (" .. pronounText .. ").") end
 end
 
