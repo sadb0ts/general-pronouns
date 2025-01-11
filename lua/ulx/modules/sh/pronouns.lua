@@ -37,7 +37,7 @@ local function setPronouns(target_ply, pronounText, isAdmin)
 
 	net.Start("TTT2PronounBroadcast")
 	net.WriteUInt64(target_ply:SteamID64())
-	net.WriteString(pronounText)
+	net.WriteString(pronounText or "nil")
 	net.Broadcast()
 
 	if not isAdmin then ULib.tsay(target_ply, "Your pronouns have been updated to (" .. pronounText .. ").") end

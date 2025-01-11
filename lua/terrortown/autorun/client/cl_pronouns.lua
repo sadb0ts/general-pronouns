@@ -38,7 +38,7 @@ net.Receive("TTT2PronounBroadcast", function()
 	local pronounORM = GetPronounORM()
 	local pronounData = pronounORM:Find(steamId)
 
-	if pronouns then
+	if pronouns ~= "nil" then
 		if not pronounData then
 			pronounData = pronounORM:New({
 				name = steamId,
