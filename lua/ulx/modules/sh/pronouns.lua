@@ -14,6 +14,11 @@ local function GetPronounORM()
 end
 
 local function setPronouns(target_ply, pronounText, isAdmin)
+	if not target_ply:Alive() and not isAdmin then
+		ULib.tsay(target_ply, "You cannot change your pronouns when you are dead.")
+		return
+	end
+
 	local pronounORM = GetPronounORM()
 	if not pronounORM then return end
 	if pronounText == "nil" then pronounText = nil end

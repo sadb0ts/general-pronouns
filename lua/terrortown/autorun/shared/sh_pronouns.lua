@@ -1,0 +1,1 @@
+CreateConVar("ttt2_pronouns_antighost", 1, {FCVAR_ARCHIVE, FCVAR_NOTIFY})
