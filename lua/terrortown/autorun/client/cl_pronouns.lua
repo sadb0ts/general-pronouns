@@ -86,16 +86,16 @@ hook.Add("PostInitPostEntity", "TTT2PronounInit", function()
 
 	// "hook" Player:NickElliptic, which TTT2 uses for a lot of name drawing.
 	local plymeta = FindMetaTable("Player")
-	local shouldVoiceDisplay = GetConVar("ttt2_pronouns_voice"):GetBool()
-	if not shouldVoiceDisplay or not plymeta or not plymeta.NickElliptic then return end
 	function plymeta:NickElliptic(width, font, scale)
 		local shouldVoiceDisplayInternal = GetConVar("ttt2_pronouns_voice"):GetBool()
 		local pronouns = ""
-		local pronounORM = GetPronounORM()
-		if shouldVoiceDisplayInternal and pronounORM then
-			local userTable = pronounORM:Find(self:SteamID64())
-			if userTable then
-				pronouns = "(" .. userTable.pronouns .. ") "
+		if shouldVoiceDisplayInternal then
+			local pronounORM = GetPronounORM()
+			if pronounORM then
+				local userTable = pronounORM:Find(self:SteamID64())
+				if userTable then
+					pronouns = "(" .. userTable.pronouns .. ") "
+				end
 			end
 		end
 		return draw.GetLimitedLengthText(pronouns .. self:Nick(), width, font, "...", scale)
