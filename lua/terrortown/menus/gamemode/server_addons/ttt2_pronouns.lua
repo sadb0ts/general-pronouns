@@ -24,4 +24,9 @@ end
 function CLGAMEMODESUBMENU:Populate(parent)
 	local antighost_options = vgui.CreateTTT2Form(parent, "pronouns_settings_antighost")
 	MakeElement(antighost_options, "antighost", "MakeCheckBox")
+
+	local display_options = vgui.CreateTTT2Form(parent, "pronouns_settings_display")
+	MakeElement(display_options, "voice", "MakeCheckBox")
+	MakeElement(display_options, "bodies", "MakeCheckBox")
+	MakeElement(display_options, "players", "MakeCheckBox")
 end

@@ -13,8 +13,10 @@ local function GetPronounORM()
 end
 
 hook.Add("TTTRenderEntityInfo", "TTTPronounsTargetID", function(tData)
+	local displayOnBodies = GetConVar("ttt2_pronouns_bodies"):GetBool()
+	local displayOnPlayers = GetConVar("ttt2_pronouns_players"):GetBool()
 	local ent = tData:GetEntity()
-	if ent:IsPlayerRagdoll() and CORPSE.GetFound(ent, false) then
+	if displayOnBodies and ent:IsPlayerRagdoll() and CORPSE.GetFound(ent, false) then
 		local ply = CORPSE.GetPlayer(ent)
 		if IsValid(ply) then
 			local pronounORM = GetPronounORM()
@@ -23,7 +25,7 @@ hook.Add("TTTRenderEntityInfo", "TTTPronounsTargetID", function(tData)
 			if not userTable then return end
 			tData:AddDescriptionLine("(" .. userTable.pronouns .. ")", Color(255, 255, 255))
 		end
-	elseif ent:IsPlayer() then
+	elseif displayOnPlayers and ent:IsPlayer() then
 		local pronounORM = GetPronounORM()
 		if not pronounORM then return end
 		local userTable = pronounORM:Find(ent:SteamID64())
@@ -84,11 +86,13 @@ hook.Add("PostInitPostEntity", "TTT2PronounInit", function()
 
 	// "hook" Player:NickElliptic, which TTT2 uses for a lot of name drawing.
 	local plymeta = FindMetaTable("Player")
-	if not plymeta or not plymeta.NickElliptic then return end
+	local shouldVoiceDisplay = GetConVar("ttt2_pronouns_voice"):GetBool()
+	if not shouldVoiceDisplay or not plymeta or not plymeta.NickElliptic then return end
 	function plymeta:NickElliptic(width, font, scale)
+		local shouldVoiceDisplayInternal = GetConVar("ttt2_pronouns_voice"):GetBool()
 		local pronouns = ""
 		local pronounORM = GetPronounORM()
-		if pronounORM then
+		if shouldVoiceDisplayInternal and pronounORM then
 			local userTable = pronounORM:Find(self:SteamID64())
 			if userTable then
 				pronouns = "(" .. userTable.pronouns .. ") "
