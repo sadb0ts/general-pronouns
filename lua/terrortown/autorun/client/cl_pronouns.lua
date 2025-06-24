@@ -1,7 +1,7 @@
 local function GetPronounORM()
 	local sqlTableName = "ttt2_pronouns_table"
 	local savingKeys = {
-		// steamId is primary key column 'name'
+		-- steamId is primary key column 'name'
 		pronouns = {
 			typ = "string",
 			default = nil
@@ -39,7 +39,6 @@ net.Receive("TTT2PronounBroadcast", function()
 	local pronouns = net.ReadString()
 	local pronounORM = GetPronounORM()
 	local pronounData = pronounORM:Find(steamId)
-
 	if pronouns ~= "nil" then
 		if not pronounData then
 			pronounData = pronounORM:New({
@@ -51,11 +50,7 @@ net.Receive("TTT2PronounBroadcast", function()
 		end
 
 		if pronounData:Save() then
-			print(
-				"Saved the following pronoun data:" ..
-				"\n   SteamID64: " .. steamId ..
-				"\n   Pronouns: " .. pronouns
-			)
+			print("Saved the following pronoun data:" .. "\n   SteamID64: " .. steamId .. "\n   Pronouns: " .. pronouns)
 		else
 			print("Failed to save the received data to the database.")
 		end
@@ -83,21 +78,4 @@ end)
 hook.Add("PostInitPostEntity", "TTT2PronounInit", function()
 	net.Start("TTT2PronounGetAll")
 	net.SendToServer()
-
-	// "hook" Player:NickElliptic, which TTT2 uses for a lot of name drawing.
-	local plymeta = FindMetaTable("Player")
-	function plymeta:NickElliptic(width, font, scale)
-		local shouldVoiceDisplayInternal = GetConVar("ttt2_pronouns_voice"):GetBool()
-		local pronouns = ""
-		if shouldVoiceDisplayInternal then
-			local pronounORM = GetPronounORM()
-			if pronounORM then
-				local userTable = pronounORM:Find(self:SteamID64())
-				if userTable then
-					pronouns = "(" .. userTable.pronouns .. ") "
-				end
-			end
-		end
-		return draw.GetLimitedLengthText(pronouns .. self:Nick(), width, font, "...", scale)
-	end
 end)
