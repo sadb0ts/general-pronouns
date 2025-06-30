@@ -116,7 +116,8 @@ if CLIENT then
 				end
 			end
 
-			if not pronouns or pronouns == "" then continue end
+			// Ensure that blank pronouns are still drawn without error.
+			if not pronouns or pronouns == "" then pronouns = "" end
 
 			self:DrawPronounBox(pronouns, x, y, w, h)
 
