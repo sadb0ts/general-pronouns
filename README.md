@@ -1,2 +1,2 @@
-# ttt2-pronouns
-Adds a pronoun display to TTT2's TargetID system.
+# general-pronouns
+this is a bad mod but it's woke, so, #yup
